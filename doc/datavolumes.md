@@ -219,7 +219,7 @@ spec:
 ## Block Volume Mode
 You can import, clone and upload a disk image to a raw block persistent volume.
 This is done by assigning the value 'Block' to the PVC volumeMode field in the DataVolume yaml.
-The following is an exmaple to import disk image to a raw block volume:
+The following is an example to import disk image to a raw block volume:
 ```yaml
 apiVersion: cdi.kubevirt.io/v1beta1
 kind: DataVolume
@@ -247,12 +247,12 @@ The DataVolume status object has conditions. There are 3 conditions available fo
 * Running
 
 The running and ready conditions are mutually exclusive, if running is true, then ready cannot be true and vice versa. Each condition has the following fields:
-* Type (Ready/Bound/Running)
-* Status (True/False)
-* LastTransitionTime The timestamp when the last transition happened.
-* LastHeartbeatTime the timestamp the last time anything on the condition was updated.
-* Reason The reason the status transitioned to a new value, this is a camel cased single word, similar to an EventReason in events.
-* Message A detailed messages expanding on the reason of the transition. For instance if Running went from True to False, the reason will be the container exit reason, and the message will be the container exit message, which explains why the container exitted.
+* Type (Ready/Bound/Running).
+* Status (True/False).
+* LastTransitionTime - the timestamp when the last transition happened.
+* LastHeartbeatTime - the timestamp the last time anything on the condition was updated.
+* Reason - the reason the status transitioned to a new value, this is a camel cased single word, similar to an EventReason in events.
+* Message - a detailed messages expanding on the reason of the transition. For instance if Running went from True to False, the reason will be the container exit reason, and the message will be the container exit message, which explains why the container exited.
 
 ## Annotations
 Specific [DV annotations](datavolume-annotations.md) are passed to the transfer pods to control their behavior.
@@ -260,13 +260,13 @@ Specific [DV annotations](datavolume-annotations.md) are passed to the transfer 
 ## Kubevirt integration
 [Kubevirt](https://github.com/kubevirt/kubevirt) is an extension to Kubernetes that allows one to run Virtual Machines(VM) on the same infra structure as the containers managed by Kubernetes. CDI provides a mechanism to get a disk image into a PVC in order for Kubevirt to consume it. The following steps have to be taken in order for Kubevirt to consume a CDI provided disk image.
 1. Create a PVC with an annotation to for instance import from an external URL.
-2. An importer pod is start that attempts to get the image from the external source.
+2. An importer pod is started, that attempts to get the image from the external source.
 3. Create a VM definition that references the PVC we just created.
 4. Wait for the importer pod to finish (status can be checked by the status annotation on the PVC).
 5. Start the VMs using the imported disk.
-There is no mechanism to stop 5 from happening before the import is complete, so once can attempt to start the VM before the disk has been completely imported, with obvious bad results.
+There is no mechanism to stop 5 from happening before the import is complete, so one can attempt to start the VM before the disk has been completely imported, with obvious bad results.
 
-Now lets do the same process but using DVs.
+Now let's do the same process but using DVs.
 1. Create a VM definition that references a DV template, which includes the external URL that contains the disk image.
 2. A DV is created from the template that in turn creates an underlying PVC with the correct annotation.
 3. The importer pod is created like before.
@@ -324,7 +324,7 @@ spec:
 [Get example](../manifests/example/vm-dv.yaml)
 
 This example combines all the different pieces into a single yaml.
-* Creation of a VM definition (example-vm)
-* Creation of a DV with a source of http which points to an external URL (example-dv)
+* Creation of a VM definition (example-vm).
+* Creation of a DV with a source of http which points to an external URL (example-dv).
 * Creation of a matching PVC with the same name as the DV, which will contain the result of the import (example-dv).
 * Creation of an importer pod that does the actual import work.
